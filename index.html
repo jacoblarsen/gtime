@@ -1,72 +1,53 @@
 <html>
 <head>
+    <title>REG|GER</title>
+    <style type="text/css">
+    
+        .legend{
+            display: inline-block; 
+            height:40px; 
+            width:20px; 
+            margin-bottom:1px; 
+            line-height: 40px;
+        }
+        
+        .entry{
+            width:800px; 
+            background-color:#ededed; 
+            padding-left:5px; 
+            margin-bottom: 1px;
+        }
+        
+        .del{
+            float: right;
+            margin-right: 10px;
+            height: 20px;
+            margin-top:10px;
+        }
+        
+        .add{
+            float: right;
+            padding-right: 300px;
+            height: 20px;
+        }
+    </style>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+</head>
+
     <!--Add a button for the user to click to initiate auth sequence -->
     <button id="authorize-button" style="visibility: hidden">Authorize</button>
-    <script type="text/javascript">
-        var clientId = '817095994072-18f2oaiebj8s5861j3lvqimr5a2o4k2d.apps.googleusercontent.com';
-
-        var apiKey = 'AIzaSyA59mvSUtnZ-1wZWYuFub4QPVv2r7UCPLw';
-
-        var scopes = 'https://www.googleapis.com/auth/calendar';
-
-        function handleClientLoad() {
-            // Step 2: Reference the API key
-            gapi.client.setApiKey(apiKey);
-            window.setTimeout(checkAuth, 1);
-        }
-
-        function checkAuth() {
-            gapi.auth.authorize({
-                client_id: clientId,
-                scope: scopes,
-                immediate: true
-            }, handleAuthResult);
-        }
-
-        function handleAuthResult(authResult) {
-            var authorizeButton = document.getElementById('authorize-button');
-            if (authResult && !authResult.error) {
-                authorizeButton.style.visibility = 'hidden';
-                makeApiCall();
-            }
-            else {
-                authorizeButton.style.visibility = '';
-                authorizeButton.onclick = handleAuthClick;
-            }
-        }
-
-        function handleAuthClick(event) {
-            // Step 3: get authorization to use private data
-            gapi.auth.authorize({
-                client_id: clientId,
-                scope: scopes,
-                immediate: false
-            }, handleAuthResult);
-            return false;
-        }
-
-        // Load the API and make an API call.  Display the results on the screen.
-        function makeApiCall() {
-            // Step 4: Load the Google+ API
-            //gapi.client.load('calendar', 'v3').then(function() {
-                // Step 5: Assemble the API request
-
-                var restRequest = gapi.client.request({
-                    'path': '/calendar/v3/users/me/calendarList',
-                    'params': {
-                        'maxResults': '2'
-                        //'orderBy': 'best'
-                    }
-                });
-                restRequest.then(function(resp) {
-                    console.log(resp.result);
-                }, function(reason) {
-                    console.log('Error: ' + reason.result.error.message);
-                });
-            //});
-        }
-    </script>
-    // Step 1: Load JavaScript client library
+    <script type="text/javascript" src="js/api.js"></script>
+    <h1>REG|GER</h1>
+    <div>
+        <div id="list">
+            
+        </div>    
+        
+        
+        
+    </div>
+    
+    
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
     </body>
 
