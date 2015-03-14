@@ -5,6 +5,13 @@ var scopes = 'https://www.googleapis.com/auth/calendar';
 var calendars;
 var regregcals = new Array();
 
+// ToDay
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+
+
 
 function handleClientLoad() {
     gapi.client.setApiKey(apiKey);
@@ -47,6 +54,8 @@ function handleAuthClick(event) {
 * Get The list af calendars, and list them with some fuctionality
 */
 function getList() {
+    document.getElementById('currDate').innerHTML = dd + '/' + mm + ' - ' + yyyy;
+    
     var restRequest = gapi.client.request({
         'path': '/calendar/v3/users/me/calendarList'
         
@@ -110,20 +119,26 @@ function delCal(id) {
 
 // FIXME: IMPLEMENT ME
 function addEvent() {
-/*    var restRequest = gapi.client.request({
+    var id ="";
+    var start = "";
+    var end = ""; 
+    var restRequest = gapi.client.request({
         'method' : 'POST',
-        'path': '/calendar/v3/calendars',
-        'body': {
-            'summary': 'regreg:'+title,
-            //'orderBy': 'best'
-        }
-    });
+        'path': '/calendar/v3/calendars/'+id,
+        'body': 
+            {
+            //"end":   { "dateTime": "2015-03-14T13:00:00Z" },
+            "end":   { "dateTime": "'+ end +'" },
+            //"start": { "dateTime": "2015-03-14T10:00:00Z" }
+            "start": { "dateTime": "'+ start +'" }
+            }
+        });
     restRequest.then(function(resp) {
-        console.log("calendar added");
+        console.log("Calender Event  Added");
         
     }, function(reason) {
         console.log('Error: ' + reason.result.error.message);
     });
-    */
+    
 }
 
