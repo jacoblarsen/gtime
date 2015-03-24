@@ -1,0 +1,75 @@
+
+// COLORS
+
+@bgColor:       #45d6db;
+@white:         #FFFFFF;
+@bgBtn:         #7ae7c0;
+
+@reset:         0px;
+
+
+@font-face {
+    font-family: 'roboto';
+    src: url('../fonts/Roboto-Thin.ttf')  format('truetype'); /* Safari, Android, iOS */
+    font-weight: 400;
+}
+
+body {
+    font-family: 'roboto', Fallback, sans-serif;
+    background:@bgColor;
+}
+h1, h2{
+    color:@white;
+    font-weight: bolder;
+}
+
+
+
+body{
+    background-color: @bgColor;
+    color: @white;
+    font-family: roboto, "sans serif";
+    padding:@reset;
+    margin:@reset;
+}
+
+#regSplash{
+    text-align:center;
+    min-width:320px;
+    min-height:568px;
+    h1{
+        text-transform: uppercase;
+        font-weight: 900;
+        span{
+            -ms-transform: rotate(180deg); /* IE 9 */
+            -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+            transform: rotate(180deg);
+            display: inline-block;
+            font-weight: 400;
+        }
+    }
+    img{
+        width:50%;
+    }
+
+
+    .logo {
+        -webkit-animation: cssAnimation 2s 8 ease;
+        -moz-animation: cssAnimation 2s 8 ease;
+        -o-animation: cssAnimation 2s 8 ease;
+    }
+    @-webkit-keyframes cssAnimation {
+        from { -webkit-transform: rotate(4deg) scale(1) skew(1deg) translate(0px);  }
+        to { -webkit-transform: rotate(360deg) scale(1) skew(1deg) translate(0px); }
+    }
+
+    .btn{
+        background-color:@bgBtn;
+        color:@white;
+        padding:20px;
+        text-decoration: none;
+        display:inline-block;
+    }
+}
+
+
