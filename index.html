@@ -2,6 +2,14 @@
 <head>
     <title>REG|GER</title>
     <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Styles -->
+    <link href="css/regreg.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="js/api.js"></script>
     <style type="text/css">
     
         .legend{
@@ -13,8 +21,7 @@
         }
         
         .entry{
-            width:800px; 
-            background-color:#ededed; 
+            width:500px; 
             padding-left:5px; 
             margin-bottom: 1px;
         }
@@ -28,7 +35,7 @@
         
         .add{
             float: right;
-            padding-right: 300px;
+            padding-right: 150px;
             height: 20px;
         }
         h2{
@@ -36,20 +43,36 @@
         }
     </style>
     </head>
+    <body>
+        <div id="regSplash">
 
-    <!--Add a button for the user to click to initiate auth sequence -->
-    <button id="authorize-button" style="visibility: hidden">Authorize</button>
-    <script type="text/javascript" src="js/api.js"></script>
-    <h1>REG|GER</h1>
-    <h2 id="currDate"></h2>
-    <div>
-        <div id="list">
+            <header>
+                <h1><span>reg</span>ger</h1>
+                <img src="img/logo.png" class="logo">
             
-        </div>    
-    </div>
-    
-    
+                <h3 id="authorize-text" style="display:none">
+                    Tidsregistrering, nemt og hurtigt.
+                    <br>
+                    Log på med
+                </h3>
+            </header>
+
+            <a href="#" id="authorize-button" class="btn" style="display:none">Google</a>
+            
+            <p>
+                <small>REGGER gemmer ingen data, det hele bliver gemt via din google calender</small>
+            </p>
+        </div>
+        
+        <div id="content" style="display:none">
+            <h1>REG|GER</h1>
+            <h2 id="currDate"></h2>
+            <div>
+                <div id="list">
+                </div>    
+            </div>
+        </div>
+
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
     </body>
-
 </html>

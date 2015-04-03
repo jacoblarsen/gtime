@@ -48,12 +48,16 @@ function checkAuth() {
 
 function handleAuthResult(authResult) {
     var authorizeButton = document.getElementById('authorize-button');
+    var authorizeText = document.getElementById('authorize-text');
+    
     if (authResult && !authResult.error) {
-        authorizeButton.style.visibility = 'hidden';
+        document.getElementById('regSplash').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
         getList(); // JAC: Get List On Load
     }
     else {
-        authorizeButton.style.visibility = '';
+        authorizeText.style.display = 'block';
+        authorizeButton.style.display = 'inline-block';
         authorizeButton.onclick = handleAuthClick;
     }
 }

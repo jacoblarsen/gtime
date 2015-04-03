@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto-Thin.ttf') format('truetype');
+  font-weight: 400;
+  
+  /* Safari, Android, iOS */
+}
+body {
+  font-family: 'roboto', Fallback, sans-serif;
+  background: #45d6db;
+}
+h1,
+h2 {
+  color: #ffffff;
+  font-weight: bolder;
+}
+body {
+  background-color: #45d6db;
+  color: #ffffff;
+  font-family: roboto, "sans serif";
+  padding: 0px;
+  margin: 0px;
+}
+#regSplash {
+  text-align: center;
+  min-width: 320px;
+  min-height: 568px;
+}
+#regSplash h1 {
+  text-transform: uppercase;
+  font-weight: 900;
+}
+#regSplash h1 span {
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(180deg);
+  display: inline-block;
+  font-weight: 400;
+}
+#regSplash img {
+  width: 50%;
+}
+#regSplash .logo {
+  -webkit-animation: cssAnimation 2s 8 ease;
+  -moz-animation: cssAnimation 2s 8 ease;
+  -o-animation: cssAnimation 2s 8 ease;
+}
+@-webkit-keyframes cssAnimation {
+  from {
+    -webkit-transform: rotate(4deg) scale(1) skew(1deg) translate(0px);
+  }
+  to {
+    -webkit-transform: rotate(360deg) scale(1) skew(1deg) translate(0px);
+  }
+}
+#regSplash .btn {
+  background-color: #7ae7c0;
+  color: #ffffff;
+  padding: 20px;
+  text-decoration: none;
+  display: inline-block;
+}
