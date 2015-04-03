@@ -1,3 +1,14 @@
+/************** Prototype extending functions ***************/
+Date.prototype.addHours= function(h){
+    this.setHours(this.getHours()+h);
+    return this;
+}
+
+Date.prototype.addMinutes= function(m){
+    this.setMinutes(this.getMinutes()+m);
+    return this;
+}
+
 /*************** Google API Init() ********************/
 var clientId = '817095994072-18f2oaiebj8s5861j3lvqimr5a2o4k2d.apps.googleusercontent.com';
 var apiKey = 'AIzaSyA59mvSUtnZ-1wZWYuFub4QPVv2r7UCPLw';
@@ -11,6 +22,8 @@ var dd = today.getDate();
 var mm = today.getMonth()+1; //January is 0!
 var yyyy = today.getFullYear();
 
+var testid = "";
+var testdate = "2015-04-15";
 
 
 function handleClientLoad() {
@@ -69,9 +82,12 @@ function getList() {
                 var cname = calendars.items[i].summary.substring(7);
                 var ccolor = calendars.items[i].backgroundColor;
                 var cid = calendars.items[i].id;
+                testid = cid;
                 regregcals.push([cid,cname,ccolor]);
+                
+            
                  myList += '<span class="legend" style="background-color:'+ccolor+'">&nbsp;</span>';  
-                 myList += '<span class="legend entry">' + cname + '<button class="del" onclick="delCal(\''+cid+'\');this.innerHTML=\'sletter..\'">slet</button> <span class="add"><input type="time" value="09:00"/> - <input type="time" value="11:00"/> <button onclick="addEvent()">tilføj</button></span></span><br/>';  
+                 myList += '<span class="legend entry">' + cname + '<button class="del" onclick="delCal(\''+cid+'\');this.innerHTML=\'sletter..\'">slet</button> <span class="add"><input type="time" value="09:00"/><button onclick="addEvent()">tilføj</button></span></span><br/>';  
             }
         }
         myList += '<span class="legend" style="background-color:black">&nbsp;</span>';  
@@ -92,7 +108,8 @@ function addCal() {
         'method' : 'POST',
         'path': '/calendar/v3/calendars',
         'body': {
-            'summary': 'regreg:'+title
+            'summary': 'regreg:'+title,
+             "timeZone": "Europe/Copenhagen"
         }
     });
     restRequest.then(function(resp) {
@@ -103,7 +120,7 @@ function addCal() {
 }
 
 /*
-* Be carefull, this really delete a calendar. 
+* Be carefull, this really deletes a calendar. 
 */
 function delCal(id) {
     var restRequest = gapi.client.request({
@@ -117,21 +134,52 @@ function delCal(id) {
     });
 }
 
-// FIXME: IMPLEMENT ME
-function addEvent() {
-    var id ="";
-    var start = "";
-    var end = ""; 
+// 
+// var date = "2015-03-14";
+// var starttime = 11.30;
+// var duration = 1.30;         
+function addEvent(id, date, starttime, duration) {
+    
+    //defaults for testing
+    var date = testdate; 
+    var id = testid;
+    
+    
+    var starttime = "11.15";
+    var duration = "1.30"; 
+    
+    
+    // getting minutes and hours as numbers 
+    // FIXME: separate all this into util function 
+    var startTimeH = parseInt(starttime.indexOf('.')>-1 ? starttime.substring(0,starttime.indexOf('.')) : starttime);
+    var startTimeM = parseInt(starttime.indexOf('.')>-1 ? starttime.substring(starttime.indexOf('.') +1 ) : "0");
+    
+    // getting minutes and hours as numbers
+    var durationH = parseInt(duration.indexOf('.')>-1 ? duration.substring(0,duration.indexOf('.')) : duration);
+    var durationM = parseInt(duration.indexOf('.')>-1 ? duration.substring(duration.indexOf('.') +1 ) : "0");
+    
+    var starttimeDate = new Date(Date.parse(date));
+    starttimeDate.setHours(startTimeH);
+    starttimeDate.setMinutes(startTimeM);
+    var starttimeString = starttimeDate.toISOString();
+    
+    var endtimeDate = starttimeDate.addHours(durationH);
+    endtimeDate.addMinutes(durationM);
+    var endtimeString = endtimeDate.toISOString();
+    
+    console.log(starttimeString);
+    
     var restRequest = gapi.client.request({
         'method' : 'POST',
-        'path': '/calendar/v3/calendars/'+id,
+        'path': '/calendar/v3/calendars/'+id+'/events',
         'body': 
             {
-            //"end":   { "dateTime": "2015-03-14T13:00:00Z" },
-            "end":   { "dateTime": "'+ end +'" },
-            //"start": { "dateTime": "2015-03-14T10:00:00Z" }
-            "start": { "dateTime": "'+ start +'" }
-            }
+            //"end":   { "dateTime": "2015-04-14T13:00:00Z" },
+            'end':   { 'dateTime': endtimeString },
+            //"start": { "dateTime": "2015-04-14T10:00:00Z" },
+            'start': { 'dateTime': starttimeString },
+            'summary': 'Projekttid'
+            },
         });
     restRequest.then(function(resp) {
         console.log("Calender Event  Added");
@@ -139,6 +187,33 @@ function addEvent() {
     }, function(reason) {
         console.log('Error: ' + reason.result.error.message);
     });
+    
+}
+
+
+// https://www.googleapis.com/calendar/v3/calendars/2m5k99v21f1q3omi8emb32k6hg%40group.calendar.google.com/events?timeMin=2015-04-15T00%3A00%3A00Z&timeMax=2015-04-15T23%3A59%3A00Z&key={YOUR_API_KEY}
+// var date = "2015-03-14";
+function getEvents(id, date){
+    var date = testdate; 
+    var id = testid; 
+    var restRequest = gapi.client.request({
+        'method' : 'GET',
+        'path': '/calendar/v3/calendars/'+id+'/events?timeMin='+date+'T00%3A00%3A00Z&timeMax='+date+'T23%3A59%3A00Z'
+        });
+    restRequest.then(function(resp) {
+    console.log(resp.result.items[0]);
+        
+       console.log(resp.result.items[0].start.dateTime);
+       console.log(resp.result.items[0].end.dateTime);
+            
+        
+    }, function(reason) {
+        console.log('Error: ' + reason.result.error.message);
+    });
+    
+    
+    
+    
     
 }
 
