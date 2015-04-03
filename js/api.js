@@ -9,21 +9,28 @@ Date.prototype.addMinutes= function(m){
     return this;
 }
 
-/*************** Google API Init() ********************/
-var clientId = '817095994072-18f2oaiebj8s5861j3lvqimr5a2o4k2d.apps.googleusercontent.com';
-var apiKey = 'AIzaSyA59mvSUtnZ-1wZWYuFub4QPVv2r7UCPLw';
-var scopes = 'https://www.googleapis.com/auth/calendar';
+/*************** Just vars *************/
 var calendars;
 var regregcals = new Array();
 
+var testid = "";
+var testdate = "2015-04-15";
+
+var hardcodedTimeZone = "Europe/Copenhagen";
+
+
 // ToDay
-var today = new Date();
+var today = new Date(testdate);
 var dd = today.getDate();
 var mm = today.getMonth()+1; //January is 0!
 var yyyy = today.getFullYear();
 
-var testid = "";
-var testdate = "2015-04-15";
+
+
+/*************** Google API Init() ********************/
+var clientId = '817095994072-18f2oaiebj8s5861j3lvqimr5a2o4k2d.apps.googleusercontent.com';
+var apiKey = 'AIzaSyA59mvSUtnZ-1wZWYuFub4QPVv2r7UCPLw';
+var scopes = 'https://www.googleapis.com/auth/calendar';
 
 
 function handleClientLoad() {
@@ -109,7 +116,7 @@ function addCal() {
         'path': '/calendar/v3/calendars',
         'body': {
             'summary': 'regreg:'+title,
-             "timeZone": "Europe/Copenhagen"
+             "timeZone": hardcodedTimeZone //FIXME, jac: Hardcoded timezone
         }
     });
     restRequest.then(function(resp) {
@@ -198,22 +205,23 @@ function getEvents(id, date){
     var id = testid; 
     var restRequest = gapi.client.request({
         'method' : 'GET',
-        'path': '/calendar/v3/calendars/'+id+'/events?timeMin='+date+'T00%3A00%3A00Z&timeMax='+date+'T23%3A59%3A00Z'
+        'path': '/calendar/v3/calendars/'+id+'/events?timeMin='+date+'T00%3A00%3A00Z&timeMax='+date+'T23%3A59%3A00Z&timeZone='+hardcodedTimeZone+'&orderBy=startTime&singleEvents=true'
         });
     restRequest.then(function(resp) {
-    console.log(resp.result.items[0]);
-        
-       console.log(resp.result.items[0].start.dateTime);
-       console.log(resp.result.items[0].end.dateTime);
-            
-        
+    
+        for (var i = 0; i < resp.result.items.length; i++){
+            var start = new Date(resp.result.items[i].start.dateTime);
+            var end = new Date(resp.result.items[i].end.dateTime);
+            var duration = new Date(end-start);
+
+            var correction = duration.getTimezoneOffset() / 60;
+            var hours = duration.getHours() + correction;
+    
+            console.log(resp.result.items[i].summary + " - " + start.getHours() + ":" + start.getMinutes() + " ; " +  hours + ":" + duration.getMinutes());    
+        }
     }, function(reason) {
         console.log('Error: ' + reason.result.error.message);
     });
-    
-    
-    
-    
     
 }
 
