@@ -9,23 +9,62 @@ Date.prototype.addMinutes= function(m){
     return this;
 }
 
+
+
 /*************** Just vars *************/
 var calendars;
 var regregcals = new Array();
 
 var testid = "";
-var testdate = "2015-04-15";
+var currdate = "2015-04-15";
 
 var hardcodedTimeZone = "Europe/Copenhagen";
 
-
 // ToDay
-var today = new Date(testdate);
-var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
-var yyyy = today.getFullYear();
+var today = new Date();
 
 
+/**************** handlers *****************/
+
+function splashHandlers(){
+    document.getElementById('authorize-button').onclick = handleAuthClick;
+}
+
+function contentHandlers(){
+    document.getElementById('nextDate').onclick = function(){
+        today.setDate(today.getDate() + 1);
+        getEvents(today);
+    };
+    
+    document.getElementById('prevDate').onclick = function(){
+        today.setDate(today.getDate() - 1);
+        getEvents(today);
+    };
+    
+    document.getElementById('today').onclick = function(){
+        today = new Date();
+        getEvents(today);
+    };
+    
+    document.getElementById('addEventPlus').onclick = function(){
+        document.getElementById('listOfCalendars').style.display = 'block';
+        document.getElementById('addEventPlus').style.display = 'none';
+        document.getElementById('addEventMinus').style.display = 'block';
+    }
+    
+    document.getElementById('addEventMinus').onclick = function(){
+        document.getElementById('listOfCalendars').style.display = 'none';
+        document.getElementById('addEventPlus').style.display = 'block';
+        document.getElementById('addEventMinus').style.display = 'none';
+    }
+    
+}
+
+
+//FIXME Handle click on calendar name
+function hello(){
+    alert("hello");
+}
 
 /*************** Google API Init() ********************/
 var clientId = '817095994072-18f2oaiebj8s5861j3lvqimr5a2o4k2d.apps.googleusercontent.com';
@@ -53,12 +92,13 @@ function handleAuthResult(authResult) {
     if (authResult && !authResult.error) {
         document.getElementById('regSplash').style.display = 'none';
         document.getElementById('content').style.display = 'block';
-        getList(); // JAC: Get List On Load
+        contentHandlers();
+        initCalendars(); // JAC: Get List On Load
     }
     else {
         authorizeText.style.display = 'block';
         authorizeButton.style.display = 'inline-block';
-        authorizeButton.onclick = handleAuthClick;
+        splashHandlers();
     }
 }
 
@@ -77,8 +117,7 @@ function handleAuthClick(event) {
 /*
 * Get The list af calendars, and list them with some fuctionality
 */
-function getList() {
-    document.getElementById('currDate').innerHTML = dd + '/' + mm + ' - ' + yyyy;
+function initCalendars() {
     
     var restRequest = gapi.client.request({
         'path': '/calendar/v3/users/me/calendarList'
@@ -95,16 +134,20 @@ function getList() {
                 var cid = calendars.items[i].id;
                 testid = cid;
                 regregcals.push([cid,cname,ccolor]);
-                
-            
-                 myList += '<span class="legend" style="background-color:'+ccolor+'">&nbsp;</span>';  
-                 myList += '<span class="legend entry">' + cname + '<button class="del" onclick="delCal(\''+cid+'\');this.innerHTML=\'sletter..\'">slet</button> <span class="add"><input type="time" value="09:00"/><button onclick="addEvent()">tilføj</button></span></span><br/>';  
+                var li = document.createElement('li');
+                li.innerHTML = cname;
+                li.setAttribute("class","calendaritem");
+                li.style.backgroundColor = ccolor;
+                li.onclick = hello;
+                document.getElementById('listOfCalendars').appendChild(li);
             }
         }
-        myList += '<span class="legend" style="background-color:black">&nbsp;</span>';  
-        myList += '<span class="legend entry">&nbsp<input placeholder="Tilføj Nyt Projekt, ved at skrive navnet her!" id="calname" style="display:inline-block; margin-top:5px; width:400px" type="text" onchange="addCal();this.value=\'tilføjer kalender....\'"/></span>';
+        getEvents(today);
+        
+        //myList += '<span class="legend" style="background-color:black">&nbsp;</span>';  
+        //myList += '<span class="legend entry">&nbsp<input placeholder="Tilføj Nyt Projekt, ved at skrive navnet her!" id="calname" style="display:inline-block; margin-top:5px; width:400px" type="text" onchange="addCal();this.value=\'tilføjer kalender....\'"/></span>';
 
-        document.getElementById('list').innerHTML = myList;
+        
     }, function(reason) {
         console.log('Error: ' + reason.result.error.message);
     });
@@ -152,7 +195,7 @@ function delCal(id) {
 function addEvent(id, date, starttime, duration) {
     
     //defaults for testing
-    var date = testdate; 
+    var date = today; 
     var id = testid;
     
     
@@ -202,30 +245,35 @@ function addEvent(id, date, starttime, duration) {
 }
 
 
-// https://www.googleapis.com/calendar/v3/calendars/2m5k99v21f1q3omi8emb32k6hg%40group.calendar.google.com/events?timeMin=2015-04-15T00%3A00%3A00Z&timeMax=2015-04-15T23%3A59%3A00Z&key={YOUR_API_KEY}
-// var date = "2015-03-14";
-function getEvents(id, date){
-    var date = testdate; 
-    var id = testid; 
-    var restRequest = gapi.client.request({
+function getEvents(dateObject){
+    
+    document.getElementById('listOfEvents').innerHTML = '';
+    mm = dateObject.getMonth() +1;
+    dd = dateObject.getDate();
+    yyyy = dateObject.getFullYear();
+    var date = yyyy + "-" + mm + "-"+dd;
+    document.getElementById('currDate').innerHTML = dd + '/' + mm + ' - ' + yyyy;
+    for(var j = 0; j < regregcals.length; j++){
+        var cid = regregcals[j][0];
+        var cname = regregcals[j][1];
+        var ccolor = regregcals[j][2];
+        var restRequest = gapi.client.request({
         'method' : 'GET',
-        'path': '/calendar/v3/calendars/'+id+'/events?timeMin='+date+'T00%3A00%3A00Z&timeMax='+date+'T23%3A59%3A00Z&timeZone='+hardcodedTimeZone+'&orderBy=startTime&singleEvents=true'
+        'path': '/calendar/v3/calendars/'+cid+'/events?timeMin='+date+'T00%3A00%3A00Z&timeMax='+date+'T23%3A59%3A00Z&timeZone='+hardcodedTimeZone+'&orderBy=startTime&singleEvents=true'
         });
-    restRequest.then(function(resp) {
-    
-        for (var i = 0; i < resp.result.items.length; i++){
-            var start = new Date(resp.result.items[i].start.dateTime);
-            var end = new Date(resp.result.items[i].end.dateTime);
-            var duration = new Date(end-start);
-
-            var correction = duration.getTimezoneOffset() / 60;
-            var hours = duration.getHours() + correction;
-    
-            console.log(resp.result.items[i].summary + " - " + start.getHours() + ":" + start.getMinutes() + " ; " +  hours + ":" + duration.getMinutes());    
-        }
-    }, function(reason) {
+        restRequest.then(function(resp) {
+            for (var i = 0; i < resp.result.items.length; i++){
+                var start = new Date(resp.result.items[i].start.dateTime);
+                var end = new Date(resp.result.items[i].end.dateTime);
+                var duration = new Date(end-start);
+                var correction = duration.getTimezoneOffset() / 60;
+                var hours = duration.getHours() + correction;
+                var li = '<li style="background-color:'+ccolor+'">'+cname+ ' fra kl. ' + start.getHours() + ":" + start.getMinutes() + " i " +  hours + "." + duration.getMinutes() + ' timer</li>';  
+                document.getElementById('listOfEvents').innerHTML += li;
+            }
+        }, function(reason) {
         console.log('Error: ' + reason.result.error.message);
-    });
-    
+        });   
+    }
 }
 

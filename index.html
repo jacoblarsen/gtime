@@ -22,7 +22,7 @@
         
         .entry{
             width:500px; 
-            padding-left:5px; 
+            xpadding-left:5px; 
             margin-bottom: 1px;
         }
         
@@ -40,6 +40,11 @@
         }
         h2{
             text-align: center;
+            display: inline;
+        }
+        .arrow{
+            text-decoration: none;
+            color:white;
         }
     </style>
     </head>
@@ -50,26 +55,32 @@
                 <h1><span>reg</span>ger</h1>
                 <img src="img/logo.png" class="logo">
             
-                <h3 id="authorize-text" style="display:none">
-                    Tidsregistrering, nemt og hurtigt.
-                    <br>
+                <h3> Tidsregistrering, nemt og hurtigt.</h3>
+                <p>
+                    <small>REGGER gemmer ingen data, det hele bliver gemt via din google calender</small>
+                </p>
+               <h3 id="authorize-text" style="display:none">
                     Log på med
                 </h3>
             </header>
 
             <a href="#" id="authorize-button" class="btn" style="display:none">Google</a>
-            
-            <p>
-                <small>REGGER gemmer ingen data, det hele bliver gemt via din google calender</small>
-            </p>
         </div>
         
         <div id="content" style="display:none">
             <h1>REG|GER</h1>
-            <h2 id="currDate"></h2>
+            <a class="arrow" id="prevDate" href="#">⇦</a>
+                <h2 id="currDate"></h2>
+            <a class="arrow" id="nextDate" href="#"> ⇨</a>
+            <a class="arrow" id="today" href="#">i dag</a>
             <div>
-                <div id="list">
-                </div>    
+                <ul id="listOfEvents">
+                </ul>
+                <button id="addEventMinus" style="display:none">-</button>
+                <button id="addEventPlus">+</button>
+                <ul id="listOfCalendars" style="display:none">
+                    
+                </ul>
             </div>
         </div>
 
