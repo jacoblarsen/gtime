@@ -1,3 +1,6 @@
+.hide {
+  display: none;
+}
 @font-face {
   font-family: 'roboto';
   src: url('../fonts/Roboto-Thin.ttf') format('truetype');
@@ -5,14 +8,12 @@
   
   /* Safari, Android, iOS */
 }
-body {
-  font-family: 'roboto', Fallback, sans-serif;
-  background: #45d6db;
-}
-h1,
-h2 {
-  color: #ffffff;
-  font-weight: bolder;
+@font-face {
+  font-family: 'roboto-regular';
+  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: 900;
+  
+  /* Safari, Android, iOS */
 }
 body {
   background-color: #45d6db;
@@ -61,4 +62,95 @@ body {
   padding: 20px;
   text-decoration: none;
   display: inline-block;
+}
+#workIndex {
+  margin-top: 48px;
+}
+#workIndex header {
+  background: #45d6db;
+  z-index: 9999;
+  position: fixed;
+  top: 0px;
+  lefte: 0px;
+  width: 100%;
+  height: 48px;
+}
+#workIndex header img {
+  height: 32px;
+  padding: 8px 8px 8px 16px;
+  float: left;
+}
+#workIndex header h1 {
+  float: left;
+  font-size: 22px;
+  line-height: 48px;
+  text-transform: uppercase;
+  font-weight: 900;
+  padding: 0px;
+  margin: 0px;
+}
+#workIndex header h1 span {
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(180deg);
+  display: inline-block;
+  font-weight: 400;
+}
+#workIndex .content {
+  color: #a8a8a8;
+}
+#workIndex .content a {
+  display: block;
+  color: #a8a8a8;
+}
+#workIndex .content .time {
+  font-weight: bolder;
+  float: right;
+}
+#workIndex .content dl,
+#workIndex .content dt,
+#workIndex .content dd,
+#workIndex .content h2,
+#workIndex .content h3 {
+  padding: 0px;
+  margin: 0px;
+  font-family: roboto-regular, "sans serif";
+}
+#workIndex .content dt a,
+#workIndex .content dd a {
+  height: 48px;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+#workIndex .content dt {
+  background: #e1e1e1;
+}
+#workIndex .content dt h2 {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 900;
+  display: inline-block;
+}
+#workIndex .content dt .date {
+  font-size: 10px;
+}
+#workIndex .content dt .time {
+  font-size: 20px;
+}
+#workIndex .content dd {
+  padding-left: 16px;
+}
+#workIndex .content dd a {
+  background: rgba(255, 255, 255, 0.9);
+}
+#workIndex .content dd a h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 900;
+  display: inline-block;
+}
+#workIndex .content dd a .time {
+  font-size: 14px;
 }

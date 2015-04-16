@@ -1,9 +1,16 @@
 
+// Work class
+.hide{
+    display:none;
+}
+
 // COLORS
 
 @bgColor:       #45d6db;
 @white:         #FFFFFF;
 @bgBtn:         #7ae7c0;
+@gray:          #a8a8a8;
+@lightGray:     #e1e1e1;
 
 @reset:         0px;
 
@@ -13,14 +20,10 @@
     src: url('../fonts/Roboto-Thin.ttf')  format('truetype'); /* Safari, Android, iOS */
     font-weight: 400;
 }
-
-body {
-    font-family: 'roboto', Fallback, sans-serif;
-    background:@bgColor;
-}
-h1, h2{
-    color:@white;
-    font-weight: bolder;
+@font-face {
+    font-family: 'roboto-regular';
+    src: url('../fonts/Roboto-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
+    font-weight: 900;
 }
 
 
@@ -70,6 +73,93 @@ body{
         text-decoration: none;
         display:inline-block;
     }
+}
+
+#workIndex{
+    margin-top:48px;
+    header{
+        background: @bgColor;
+        z-index: 9999;
+        position: fixed;
+        top:0px;
+        lefte:0px;
+        width:100%;
+        height:48px;
+        img{
+            height:32px;
+            padding:8px 8px 8px 16px;
+            float:left;
+        }
+        h1{
+            float:left;
+            font-size: 22px;
+            line-height: 48px;
+            text-transform: uppercase;
+            font-weight: 900;
+            padding:0px;
+            margin:0px;
+            span{
+                -ms-transform: rotate(180deg); /* IE 9 */
+                -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+                transform: rotate(180deg);
+                display: inline-block;
+                font-weight: 400;
+            }
+        }
+    }
+    .content{
+        a{
+           display: block;
+           color:@gray;
+        }
+        color:@gray;
+
+        .time{
+            font-weight: bolder;
+            float:right;
+        }
+        dl, dt, dd, h2, h3{
+            padding: 0px;
+            margin: 0px;
+            font-family: roboto-regular, "sans serif";
+        }
+        dt a, dd a{
+            height:48px;
+            padding:12px 16px;
+            box-sizing: border-box;
+        }
+        dt{
+            background:@lightGray;
+            h2{
+                font-size: 16px;
+                text-transform: uppercase;
+                font-weight: 900;
+                display: inline-block;
+            }
+            .date{
+                font-size: 10px;
+            }
+            .time{
+                font-size: 20px;
+            }
+        }
+        dd{
+            padding-left:16px;
+            a{
+                background: rgba(255, 255, 255, 0.9);
+                h3{
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    font-weight: 900;
+                    display: inline-block;
+                }
+                .time{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
 }
 
 
